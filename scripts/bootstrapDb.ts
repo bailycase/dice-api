@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { getDb } from "../src/lib/sequelize";
 import { models } from "../src/models";
 
-const NUM_USERS = 100;
+const NUM_USERS = 1000;
 const NUM_BETS = NUM_USERS * 5;
 
 const boostrapDb = async () => {
@@ -29,12 +29,14 @@ const boostrapDb = async () => {
     const chance = Math.floor(Math.random() * 99) + 1;
     const payout = Math.floor(betAmount * (100 / chance));
 
+    const won = roll >= chance;
+
     bets.push({
       userId,
       betAmount,
       chance,
-      payout,
-      win: roll >= chance,
+      payout: won ? payout : 0,
+      win: won,
     });
   }
 
