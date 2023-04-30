@@ -1,15 +1,16 @@
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServer } from "@apollo/server";
-import express from "express";
-import http, { get } from "http";
+import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import { resolvers } from "./resolvers";
-import { schema } from "./schemas";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { json } from "body-parser";
 import cors from "cors";
+import express from "express";
+import http from "http";
+import bootstrapDb from "../scripts/bootstrapDb";
 import { getDb } from "./lib/sequelize";
 import "./models";
+import { resolvers } from "./resolvers";
+import { schema } from "./schemas";
 
 const server = async () => {
   const app = express();
@@ -22,7 +23,9 @@ const server = async () => {
 
   const db = getDb();
 
-  // db.sync({ force: true });
+  if (process.env.ENVIRONMENT === "testing") {
+    bootstrapDb();
+  }
 
   const apolloServer = new ApolloServer({
     schema: executableSchema,
@@ -34,10 +37,7 @@ const server = async () => {
   app.use(
     "/graphql",
     cors<cors.CorsRequest>({
-      origin: [
-        "https://studio.apollographql.com",
-        "http://localhost:1337/graphql",
-      ],
+      origin: ["https://studio.apollographql.com"],
     }),
     json(),
     expressMiddleware(apolloServer, {

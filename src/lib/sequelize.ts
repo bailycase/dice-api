@@ -4,9 +4,14 @@ let sequelize: Sequelize;
 
 export const getDb = () => {
   if (!sequelize) {
-    sequelize = new Sequelize(
-      "postgres://postgres:password@localhost:5432/dice-api"
-    );
+    console.log(process.env);
+    sequelize = new Sequelize({
+      host: process.env.DB_HOST!,
+      username: process.env.DB_USERNAME!,
+      password: process.env.DB_PASSWORD!,
+      port: parseInt(process.env.DB_PORT!),
+      dialect: "postgres",
+    });
   }
 
   return sequelize;

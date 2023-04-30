@@ -43,7 +43,6 @@ const boostrapDb = async () => {
   await models.bet.bulkCreate(bets);
 
   console.log(`${NUM_BETS} bets created successfully`);
-  await db.close();
 };
 
-boostrapDb().catch((error) => console.error(error));
+export default boostrapDb;
