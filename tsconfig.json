@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "outDir": "dist",
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "sourceMap": true,
+      "allowJs": true,
+      "strictNullChecks": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "lib": ["esnext"]
+    },
+    "ts-node": {
+      "files": true
+    },
+    "include": ["src/**/*", "src/graphql/**/*.graphql", "index.d.ts"],
+    "exclude": ["node_modules", "**/*.test.ts"]
+  }
